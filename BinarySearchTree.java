@@ -12,6 +12,13 @@ public class BinarySearchTree {
 
 	// constructor
 	/**
+	 * construct an empty tree
+	 */
+	public BinarySearchTree() {
+		this.root = null;
+	}
+
+	/**
 	 * @param root the root node of the tree
 	 */
 	public BinarySearchTree(Node<Integer> root) {
@@ -52,11 +59,51 @@ public class BinarySearchTree {
 	 * @param item
 	 */
 	public void insert(int item) {
-		// TODO
-	}
+		// construct a new node for the new item
+		Node<Integer> newNode = new Node<Integer>(item);
 
-	public void add(int item) {
-		// TODO
+		// if the tree is empty, set the item as the root node
+		if (this.isEmpty()) {
+			this.root = newNode;
+		} else {
+			// get the current node
+			Node<Integer> current = this.root;
+
+			// find the position of the new node
+			while (current.getData() != null) {
+				// if item is smaller than current, put it into the left
+				if (item < current.getData()) {
+					// if the current node has left, continue to compare
+					if (current.getLeft() != null) {
+						current = current.getLeft();
+					} else {
+						break;
+					}
+				}
+				// if item is greater than current, put it into the right
+				else {
+					// if the current node has right, continue to compare
+					if (current.getRight() != null) {
+						current = current.getRight();
+					} else {
+						break;
+					}
+					current = current.getRight();
+				}
+			}
+			
+			// put the item into the tree
+			newNode.setParent(current);
+			// if the item is smaller than current node, set it as the left child
+			if( item < current.getData()) {
+				current.setLeft(newNode);
+			}
+			// if the item is greater than current node, set it as the right child
+			else {
+				current.setRight(newNode);
+			}
+			
+		}
 	}
 
 	/**
@@ -93,7 +140,7 @@ public class BinarySearchTree {
 				temp = temp.getRight();
 			}
 		}
-		
+
 		// check the type of node
 		// if it's leaf
 		if (temp.getLeft() == null && temp.getRight() == null) {
@@ -136,7 +183,7 @@ public class BinarySearchTree {
 		// if it has two children
 		else {
 			// save current node
-			Node<Integer> change = temp;
+			Node<Integer> removeNode = temp;
 
 			// find its successor
 			// start at the right of current node
@@ -148,17 +195,28 @@ public class BinarySearchTree {
 
 			// set the successor at the position of item
 			// check whether it is on the left or right
-			if (change.getParent().getLeft() != null && change.getParent().getLeft().equals(change)) {
+			if (removeNode.getParent().getLeft() != null && removeNode.getParent().getLeft().equals(removeNode)) {
 				// adjusting the link form parent to child
-				change.getParent().setLeft(temp);
+				removeNode.getParent().setLeft(temp);
 			} else {
 				// adjusting the link from parent to child
-				change.getParent().setRight(temp);
+				removeNode.getParent().setRight(temp);
 			}
-			// adjusting the link from child to parent
-			temp.setParent(change.getParent());
-			temp.setLeft(change.getLeft());
-			change.getLeft().setParent(temp);
+			
+			// remove the link of temp and its parent
+			// if temp is the left child
+			if( temp.getParent().getLeft().equals(temp)) {
+				temp.getParent().setLeft(null);
+			}
+			// if temp is the right child
+			else {
+				temp.getParent().setRight(null);
+			}
+			// link the temp with the parent and children of the removeNode
+			temp.setParent(removeNode.getParent());
+			temp.setLeft(removeNode.getLeft());
+			temp.setRight(removeNode.getRight());
+			removeNode.getLeft().setParent(temp);
 
 		}
 	}
@@ -171,7 +229,7 @@ public class BinarySearchTree {
 		if (this.isEmpty()) {
 			return "The tree is empty";
 		}
-		
+
 		return toString_helper(this.root);
 	}
 
