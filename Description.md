@@ -10,3 +10,17 @@
 
 ### Trees
 - For a tree, it records the root node of the tree. 
+
+#### operations/ find
+
+##### contains
+- To check whether a node is in the tree
+
+##### insert/ add
+- Insert a node into its correct position
+
+#### isEmpty
+- To check whether the tree contains node
+
+#### remove/ delete
+- remove a node from the tree
