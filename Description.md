@@ -11,9 +11,9 @@
 ### Trees
 - For a tree, it records the root node of the tree. 
 
-#### operations/ find
+#### operations
 
-##### contains
+##### contains/ find
 - To check whether a node is in the tree
 
 ##### insert/ add
